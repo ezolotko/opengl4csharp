@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 
 namespace OpenGL
 {
@@ -24,7 +23,7 @@ namespace OpenGL
         /// <summary>
         /// The size (in pixels) of all renderbuffers associated with this framebuffer.
         /// </summary>
-        public Size Size { get; private set; }
+        public SizeInt Size { get; private set; }
 
         /// <summary>
         /// The attachments used by this framebuffer.
@@ -41,7 +40,7 @@ namespace OpenGL
 
         #region Constructor and Destructor
         public FBO(int width, int height, FramebufferAttachment attachment = FramebufferAttachment.ColorAttachment0, PixelInternalFormat format = PixelInternalFormat.Rgba8, bool mipmaps = true)
-            : this(new Size(width, height), new FramebufferAttachment[] { attachment }, format, mipmaps)
+            : this(new SizeInt(width, height), new FramebufferAttachment[] { attachment }, format, mipmaps)
         {
         }
 
@@ -51,7 +50,7 @@ namespace OpenGL
         /// <param name="Size">Specifies the size (in pixels) of the framebuffer and it's associated buffers.</param>
         /// <param name="Attachments">Specifies the attachment to use for the pbuffer.</param>
         /// <param name="Format">Specifies the internal pixel format for the pbuffer.</param>
-        public FBO(Size Size, FramebufferAttachment Attachment = FramebufferAttachment.ColorAttachment0, PixelInternalFormat Format = PixelInternalFormat.Rgba8, bool Mipmaps = true)
+        public FBO(SizeInt Size, FramebufferAttachment Attachment = FramebufferAttachment.ColorAttachment0, PixelInternalFormat Format = PixelInternalFormat.Rgba8, bool Mipmaps = true)
             : this(Size, new FramebufferAttachment[] { Attachment }, Format, Mipmaps)
         {
         }
@@ -63,7 +62,7 @@ namespace OpenGL
         /// <param name="Attachments">Specifies the attachments to use for the frame buffer.</param>
         /// <param name="Format">Specifies the internal pixel format for the frame buffer.</param>
         /// <param name="Mipmaps">Specified whether to build mipmaps after the frame buffer is unbound.</param>
-        public FBO(Size Size, FramebufferAttachment[] Attachments, PixelInternalFormat Format, bool Mipmaps, TextureParameter filterType = TextureParameter.Linear)
+        public FBO(SizeInt Size, FramebufferAttachment[] Attachments, PixelInternalFormat Format, bool Mipmaps, TextureParameter filterType = TextureParameter.Linear)
         {
             this.Size = Size;
             this.Attachments = Attachments;

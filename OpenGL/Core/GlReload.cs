@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Runtime.InteropServices;
 using System.Reflection;
 using System.Diagnostics;
-using System.Reflection.Emit;
 using System.IO;
 
 namespace OpenGL
@@ -153,9 +151,14 @@ namespace OpenGL
         public static Delegate GetDelegate(string name, Type signature)
         {
             MethodInfo m;
+
+            // return GetExtensionDelegate(name, signature) ??
+            //       (Core.FunctionMap.TryGetValue((name.Substring(2)), out m) ?
+            //        Delegate.CreateDelegate(signature, m) : null);
+
             return GetExtensionDelegate(name, signature) ??
                   (Core.FunctionMap.TryGetValue((name.Substring(2)), out m) ?
-                   Delegate.CreateDelegate(signature, m) : null);
+                   m.CreateDelegate(signature) : null);
         }
 
         #endregion
@@ -183,7 +186,9 @@ namespace OpenGL
             }
             else
             {
+#pragma warning disable 0618 
                 return Marshal.GetDelegateForFunctionPointer(address, signature);
+#pragma warning restore 0618 
             }
         }
 
@@ -268,32 +273,17 @@ namespace OpenGL
         {
             if (getProcAddress == null)
             {
-                if (System.Environment.OSVersion.Platform == PlatformID.Win32NT ||
-                    System.Environment.OSVersion.Platform == PlatformID.Win32S ||
-                    System.Environment.OSVersion.Platform == PlatformID.Win32Windows ||
-                    System.Environment.OSVersion.Platform == PlatformID.WinCE)
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 {
                     getProcAddress = new GetProcAddressWindows();
                 }
-                else if (System.Environment.OSVersion.Platform == PlatformID.Unix ||
-                         System.Environment.OSVersion.Platform == (PlatformID)4)
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
                 {
-                    // Distinguish between Unix and Mac OS X kernels.
-                    switch (DetectUnixKernel())
-                    {
-                        case "Unix":
-                        case "Linux":
-                            getProcAddress = new GetProcAddressX11();
-                            break;
-
-                        case "Darwin":
-                            getProcAddress = new GetProcAddressOSX();
-                            break;
-
-                        default:
-                            throw new PlatformNotSupportedException(
-                                DetectUnixKernel() + ": Unknown Unix platform - cannot load extensions. Please report a bug at http://taoframework.com");
-                    }
+                    getProcAddress = new GetProcAddressOSX();
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+                    getProcAddress = new GetProcAddressX11();
                 }
                 else
                 {

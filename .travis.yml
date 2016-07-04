@@ -1,4 +1,0 @@
-## Travis CI Integration
-
-language: csharp
-solution: OpenGL.sln

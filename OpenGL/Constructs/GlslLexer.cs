@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.IO;
 
@@ -219,7 +218,7 @@ namespace OpenGL
         public static List<Token> GetTokens(string filename)
         {
             if (!File.Exists(filename)) return new List<Token>();
-            Environment.CurrentDirectory = new FileInfo(filename).DirectoryName;
+            // Environment.CurrentDirectory = new FileInfo(filename).DirectoryName;
             return GetTokens(GetLines(filename));
         }
 
@@ -240,7 +239,7 @@ namespace OpenGL
         /// <returns>A list of lines that make up the GLSL program.</returns>
         public static List<Line> GetLines(string filename)
         {
-            using (StreamReader stream = new StreamReader(filename))
+            using (StreamReader stream = new StreamReader(File.OpenRead(filename)))
                 return GetLinesFromMemory(stream.ReadToEnd(), filename);
         }
 

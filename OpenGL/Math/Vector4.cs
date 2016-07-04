@@ -3,7 +3,6 @@ using System.Runtime.InteropServices;
 
 namespace OpenGL
 {
-    [Serializable]
     [StructLayout(LayoutKind.Sequential)]
     public struct Vector4 : IEquatable<Vector4>
     {

@@ -197,7 +197,7 @@ namespace OpenGL
             if (vboHandle == 0) return 0;
 
             Gl.BindBuffer(target, vboHandle);
-            Gl.BufferData<T>(target, data.Length * Marshal.SizeOf(typeof(T)), data, hint);
+            Gl.BufferData<T>(target, data.Length * Marshal.SizeOf<T>(), data, hint);
             Gl.BindBuffer(target, 0);
             return vboHandle;
         }
@@ -218,7 +218,7 @@ namespace OpenGL
             if (vboHandle == 0) return 0;
 
             Gl.BindBuffer(target, vboHandle);
-            Gl.BufferData<T>(target, length * Marshal.SizeOf(typeof(T)), data, hint);
+            Gl.BufferData<T>(target, length * Marshal.SizeOf<T>(), data, hint);
             Gl.BindBuffer(target, 0);
             return vboHandle;
         }
@@ -239,7 +239,7 @@ namespace OpenGL
             if (vboHandle == 0) return 0;
 
             Gl.BindBuffer(target, vboHandle);
-            Gl.BufferData<T>(target, position * Marshal.SizeOf(typeof(T)), length * Marshal.SizeOf(typeof(T)), data, hint);
+            Gl.BufferData<T>(target, position * Marshal.SizeOf<T>(), length * Marshal.SizeOf<T>(), data, hint);
             Gl.BindBuffer(target, 0);
             return vboHandle;
         }
@@ -460,7 +460,7 @@ namespace OpenGL
 
             Gl.EnableVertexAttribArray(location);
             Gl.BindBuffer(buffer);
-            Gl.VertexAttribPointer(location, buffer.Size, buffer.PointerType, true, Marshal.SizeOf(typeof(T)), IntPtr.Zero);
+            Gl.VertexAttribPointer(location, buffer.Size, buffer.PointerType, true, Marshal.SizeOf<T>(), IntPtr.Zero);
         }
 
         /// <summary>
